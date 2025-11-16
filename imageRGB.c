@@ -282,13 +282,59 @@ void ImageDestroy(Image* imgp) {
 /// On success, a new copied image is returned.
 /// (The caller is responsible for destroying the returned image!)
 Image ImageCopy(const Image img) {
-  assert(img != NULL);
+    assert(img != NULL);
 
-  // TO BE COMPLETED
-  // ...
+    // Allocate new image struct
+    Image copy = malloc(sizeof(*img));
+    if (!copy) return NULL;
 
-  return NULL;
+    // Copy width, height, and num_colors
+    (*copy).width = (*img).width;
+    (*copy).height = (*img).height;
+    (*copy).num_colors = (*img).num_colors;
+
+    // Copy the LUT
+    if ((*img).num_colors > 0 && (*img).LUT != NULL) {
+        (*copy).LUT = malloc(sizeof(rgb_t) * (*img).num_colors);
+        if (!(*copy).LUT) {
+            free(copy);
+            return NULL;
+        }
+        memcpy((*copy).LUT, (*img).LUT, sizeof(rgb_t) * (*img).num_colors);
+    } else {
+        (*copy).LUT = NULL;
+    }
+
+    // Copy the 2D image array
+    if ((*img).height > 0 && (*img).width > 0 && (*img).image != NULL) {
+        (*copy).image = malloc(sizeof(uint16*) * (*img).height);
+        if (!(*copy).image) {
+            free((*copy).LUT);
+            free(copy);
+            return NULL;
+        }
+
+        for (uint32 row = 0; row < (*img).height; row++) {
+            (*copy).image[row] = malloc(sizeof(uint16) * (*img).width);
+            if (!(*copy).image[row]) {
+                // Clean up previously allocated rows
+                for (uint32 r = 0; r < row; r++) {
+                    free((*copy).image[r]);
+                }
+                free((*copy).image);
+                free((*copy).LUT);
+                free(copy);
+                return NULL;
+            }
+            memcpy((*copy).image[row], (*img).image[row], sizeof(uint16) * (*img).width);
+        }
+    } else {
+        (*copy).image = NULL;
+    }
+
+    return copy;
 }
+
 
 /// Printing on the console
 
@@ -556,10 +602,28 @@ int ImageIsEqual(const Image img1, const Image img2) {
   assert(img1 != NULL);
   assert(img2 != NULL);
 
-  // TO BE COMPLETED
-  // ...
+  if((*img1).height != (*img2).height){
+    return 0;
+  }
+  if((*img1).width != (*img2).width){
+    return 0;
+  }
+  if((*img1).num_colors != (*img2).num_colors){
+    return 0;
+  }
 
-  return 0;
+  if(memcmp((*img1).LUT, (*img2).LUT, sizeof(rgb_t) * (*img1).num_colors) != 0){
+    return 0;
+  }
+
+  for (uint32 row = 0; row < (*img1).height; row++){
+    if(memcmp((*img1).image[row], (*img2).image[row], sizeof(uint16) * (*img1).width) != 0){
+      return 0;
+    }
+  }
+  
+
+  return 1;
 }
 
 int ImageIsDifferent(const Image img1, const Image img2) {
@@ -586,10 +650,24 @@ int ImageIsDifferent(const Image img1, const Image img2) {
 Image ImageRotate90CW(const Image img) {
   assert(img != NULL);
 
-  // TO BE COMPLETED
-  // ...
+  uint32 new_width = (*img).height;
+  uint32 new_height = (*img).width;
 
-  return NULL;
+  Image Img_rotated90 = ImageCreate(new_width, new_height);
+
+  // Copy the LUT from the original
+  Img_rotated90->num_colors = img->num_colors;
+  memcpy(Img_rotated90->LUT, img->LUT, sizeof(rgb_t) * img->num_colors);
+
+  // Copy the pixel labels
+  for (uint32 row = 0; row < img->height; row++) {
+      for (uint32 col = 0; col < img->width; col++) {
+          Img_rotated90->image[col][new_height - 1 - row] = img->image[row][col];
+      }
+  }
+
+  
+  return Img_rotated90;
 }
 
 /// Rotate 180 degrees clockwise (CW).
@@ -601,10 +679,22 @@ Image ImageRotate90CW(const Image img) {
 Image ImageRotate180CW(const Image img) {
   assert(img != NULL);
 
-  // TO BE COMPLETED
-  // ...
+  uint32 width = img->width;
+  uint32 height = img->height;
 
-  return NULL;
+  Image Img_rotated180 = ImageCreate(width, height);
+
+  // Copy the LUT from the original image
+  Img_rotated180->num_colors = img->num_colors;
+  memcpy(Img_rotated180->LUT, img->LUT, sizeof(rgb_t) * img->num_colors);
+
+  // Copy pixels rotated 180 degrees
+  for (uint32 row = 0; row < height; row++) {
+      for (uint32 col = 0; col < width; col++) {
+          Img_rotated180->image[height - 1 - row][width - 1 - col] = img->image[row][col];
+      }
+  }
+  return Img_rotated180;
 }
 
 /// Check whether pixel coords (u, v) are inside img.
@@ -632,7 +722,7 @@ int ImageIsValidPixel(const Image img, int u, int v) {
 /// Each function carries out a different version of the algorithm.
 
 /// Region growing using the recursive flood-filling algorithm.
-int ImageRegionFillingRecursive(Image img, int u, int v, uint16 label) {
+/*int ImageRegionFillingRecursive(Image img, int u, int v, uint16 label) {
   assert(img != NULL);
   assert(ImageIsValidPixel(img, u, v));
   assert(label < FIXED_LUT_SIZE);
@@ -687,4 +777,4 @@ int ImageSegmentation(Image img, FillingFunction fillFunct) {
   // ...
 
   return 0;
-}
+}*/

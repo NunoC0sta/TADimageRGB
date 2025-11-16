@@ -31,7 +31,6 @@ double cpu_time(void) ; ///
 //
 // GNU/Linux and MacOS code to measure elapsed time
 //
-
 #include <time.h>
 
 double cpu_time(void) {
