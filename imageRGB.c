@@ -622,7 +622,6 @@ int ImageIsEqual(const Image img1, const Image img2) {
     }
   }
   
-
   return 1;
 }
 

@@ -4,6 +4,11 @@
             "cwd": "/home/nuno/Uni/AED/TADimageRGB",
             "binaryPath": "/home/nuno/Uni/AED/TADimageRGB/imageRGBTest",
             "binaryArgs": []
+        },
+        {
+            "cwd": "/home/nuno/Uni/AED/TADimageRGB",
+            "binaryPath": "/home/nuno/Uni/AED/TADimageRGB/analiseIsEquals",
+            "binaryArgs": []
         }
     ]
 }

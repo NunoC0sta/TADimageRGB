@@ -1,28 +1,27 @@
-# make              # to compile files and create the executables
-# make clean        # to cleanup object files and executables
-# make cleanobj     # to cleanup object files only
+# Nome do executável
+EXEC = analiseIsEquals
 
-CFLAGS = -Wall -Wextra -O2 -g
+# Compilador e flags
+CC = gcc
+CFLAGS = -Wall -O2
 
-PROGS = imageRGBTest
+# Arquivos fonte
+SRCS = analiseIsEquals.c instrumentation.c imageRGB.c
 
-# Default rule: make all programs
-all: $(PROGS)
+# Arquivos objeto
+OBJS = $(SRCS:.c=.o)
 
-imageRGBTest: imageRGBTest.o imageRGB.o instrumentation.o error.o \
-			  PixelCoords.o PixelCoordsQueue.o PixelCoordsStack.o
+# Regra padrão
+all: $(EXEC)
 
-imageRGBTest.o: imageRGB.h instrumentation.h error.h \
-                PixelCoords.h PixelCoordsQueue.h PixelCoordsStack.h
+# Compilar o executável
+$(EXEC): $(OBJS)
+	$(CC) $(CFLAGS) -o $(EXEC) $(OBJS)
 
-# Rule to make any .o file dependent upon corresponding .h file
-%.o: %.h
+# Compilar cada .c em .o
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
-# Make uses builtin rule to create .o from .c files.
-
-cleanobj:
-	rm -f *.o
-
-clean: cleanobj
-	rm -f $(PROGS)
-
+# Limpar arquivos compilados
+clean:
+	rm -f $(OBJS) $(EXEC)
