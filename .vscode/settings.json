@@ -1,0 +1,9 @@
+{
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/home/nuno/Uni/AED/TADimageRGB",
+            "binaryPath": "/home/nuno/Uni/AED/TADimageRGB/imageRGBTest",
+            "binaryArgs": []
+        }
+    ]
+}
