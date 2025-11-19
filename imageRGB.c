@@ -604,30 +604,30 @@ int ImageIsEqual(const Image img1, const Image img2) {
 
   InstrCount[0]++;
   if((*img1).height != (*img2).height){
-    return 0;
+    return 1;
   }
   InstrCount[0]++;
   if((*img1).width != (*img2).width){
-    return 0;
+    return 1;
   }
   InstrCount[0]++;
   if((*img1).num_colors != (*img2).num_colors){
-    return 0;
+    return 1;
   }
 
   InstrCount[0]++;
   if(memcmp((*img1).LUT, (*img2).LUT, sizeof(rgb_t) * (*img1).num_colors) != 0){
-    return 0;
+    return 1;
   }
 
   for (uint32 row = 0; row < (*img1).height; row++){
     InstrCount[0]++;
     if(memcmp((*img1).image[row], (*img2).image[row], sizeof(uint16) * (*img1).width) != 0){   
-      return 0;
+      return 1;
     }
   }
   
-  return 1;
+  return 0;
 }
 
 int ImageIsDifferent(const Image img1, const Image img2) {

@@ -1,0 +1,55 @@
+Tipo de Comparação,Tempo decorrido (último reset) (s),Tempo em unidades calibradas (s),Número de Comparações
+"Imagens quadradas iguais (1x1)",0.000018,0.000036,5
+"Imagens quadradas iguais (5x5)",0.000006,0.000014,9
+"Imagens quadradas iguais (50x50)",0.000006,0.000012,54
+"Imagens quadradas iguais (500x500)",0.000049,0.000108,504
+"Imagens quadradas iguais (5000x5000)",0.003785,0.007765,5004
+"Imagens quadradas iguais (12000x12000)",0.027332,0.052451,12004
+"Imagens quadradas mesmas dimensões, cores diferentes (1x1)",0.000012,0.000025,4
+"Imagens quadradas mesmas dimensões, cores diferentes (5x5)",0.000009,0.000016,4
+"Imagens quadradas mesmas dimensões, cores diferentes (50x50)",0.000005,0.000011,4
+"Imagens quadradas mesmas dimensões, cores diferentes (500x500)",0.000005,0.000011,4
+"Imagens quadradas mesmas dimensões, cores diferentes (5000x5000)",0.000009,0.000021,4
+"Imagens quadradas mesmas dimensões, cores diferentes (12000x12000)",0.000008,0.000016,4
+"Imagens quadradas tamanhos diferentes (1x1 vs 5x5)",0.000006,0.000014,1
+"Imagens quadradas tamanhos diferentes (1x1 vs 12000x12000)",0.000006,0.000012,1
+"Imagens quadradas tamanhos diferentes (5x5 vs 50x50)",0.000005,0.000012,1
+"Imagens quadradas tamanhos diferentes (5x5 vs 12000x12000)",0.000006,0.000013,1
+"Imagens quadradas tamanhos diferentes (50x50 vs 500x500)",0.000006,0.000014,1
+"Imagens quadradas tamanhos diferentes (50x50 vs 5000x5000)",0.000007,0.000017,1
+"Imagens quadradas tamanhos diferentes (50x50 vs 12000x12000)",0.000009,0.000018,1
+"Imagens quadradas tamanhos diferentes (500x500 vs 5000x5000)",0.000006,0.000013,1
+"Imagens quadradas tamanhos diferentes (5000x5000 vs 12000x12000)",0.000009,0.000018,1
+"Imagens retangulares iguais (1x2)",0.000010,0.000023,6
+"Imagens retangulares iguais (2x1)",0.000003,0.000008,5
+"Imagens retangulares iguais (50x100)",0.000005,0.000010,104
+"Imagens retangulares iguais (100x50)",0.000006,0.000012,54
+"Imagens retangulares iguais (12000x6000)",0.013803,0.029055,6004
+"Imagens retangulares iguais (6000x12000)",0.012769,0.026485,12004
+"Imagens retangulares cores diferentes (1x2)",0.000008,0.000017,4
+"Imagens retangulares cores diferentes (2x1)",0.000007,0.000015,4
+"Imagens retangulares cores diferentes (12000x6000)",0.000010,0.000021,4
+"Imagens retangulares cores diferentes (6000x12000)",0.000009,0.000020,4
+"Imagem 1x1 com primeiro pixel alterado",0.000006,0.000014,5
+"Imagem 1x1 com último pixel alterado",0.000004,0.000008,5
+"Imagem 1x1 com pixel alterado na primeira linha",0.000003,0.000007,5
+"Imagem 1x1 com pixel alterado na última linha",0.000003,0.000007,5
+"Imagem 50x50 com primeiro pixel alterado",0.000007,0.000015,54
+"Imagem 50x50 com último pixel alterado",0.000005,0.000012,54
+"Imagem 50x50 com pixel alterado na primeira linha",0.000007,0.000016,54
+"Imagem 50x50 com pixel alterado na última linha",0.000004,0.000008,54
+"Imagem 5000x5000 com primeiro pixel alterado",0.005269,0.011891,5004
+"Imagem 5000x5000 com último pixel alterado",0.003747,0.008388,5004
+"Imagem 5000x5000 com pixel alterado na primeira linha",0.003657,0.008245,5004
+"Imagem 5000x5000 com pixel alterado na última linha",0.003529,0.007927,5004
+"Imagem 12000x12000 com primeiro pixel alterado",0.026133,0.052954,12004
+"Imagem 12000x12000 com último pixel alterado",0.026520,0.059501,12004
+"Imagem 12000x12000 com pixel alterado na primeira linha",0.025443,0.055799,12004
+"Imagem 12000x12000 com pixel alterado na última linha",0.025716,0.056312,12004
+"Comparação quadrado (1x1) vs retângulo (6000x12000)",0.000008,0.000017,1
+"Comparação quadrado (5x5) vs retângulo (6000x12000)",0.000005,0.000012,1
+"Comparação quadrado (50x50) vs retângulo (1x2)",0.000006,0.000014,1
+"Comparação quadrado (50x50) vs retângulo (6000x12000)",0.000007,0.000016,1
+"Comparação quadrado (500x500) vs retângulo (6000x12000)",0.000009,0.000020,1
+"Comparação quadrado (5000x5000) vs retângulo (6000x12000)",0.000010,0.000021,1
+"Comparação quadrado (12000x12000) vs retângulo (6000x12000)",0.000009,0.000017,2
