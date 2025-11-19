@@ -726,20 +726,58 @@ int ImageIsValidPixel(const Image img, int u, int v) {
 /// Each function carries out a different version of the algorithm.
 
 /// Region growing using the recursive flood-filling algorithm.
-/*int ImageRegionFillingRecursive(Image img, int u, int v, uint16 label) {
+
+
+/// Função auxiliar estática para a versão recursiva
+/// Motivo: A recursão precisa de saber a "cor antiga" (match_label) para comparar,
+/// mas a função pública só recebe a "cor nova". Esta função resolve isso.
+static int _recursiveFilling(Image img, int u, int v, uint16 match_label, uint16 new_label) {
+  // Verificar se as coordenadas estão dentro da imagem
+  if (!ImageIsValidPixel(img, u, v)) {
+    return 0;
+  }
+
+  // Verificar a cor atual do pixel
+  PIXMEM += 1; // Contar leitura da memória
+  if (img->image[v][u] != match_label) {
+    return 0; // Se nã for da cor que estamos a pintar paramos
+  }
+
+  // Pintar o pixel com a nova cor
+  PIXMEM += 1; // Contar escrita na memoria
+  img->image[v][u] = new_label;
+  
+  int count = 1; // Contamos este pixel como pintado
+
+  // Chamadas recursivas aos 4 pixeis mais próximos (Direita, Baixo, Esquerda, Cima)
+  count += _recursiveFilling(img, u + 1, v, match_label, new_label);
+  count += _recursiveFilling(img, u, v + 1, match_label, new_label);
+  count += _recursiveFilling(img, u - 1, v, match_label, new_label);
+  count += _recursiveFilling(img, u, v - 1, match_label, new_label);
+
+  return count;
+}
+
+/// Region growing using the recursive flood-filling algorithm.
+int ImageRegionFillingRecursive(Image img, int u, int v, uint16 label) {
   assert(img != NULL);
   assert(ImageIsValidPixel(img, u, v));
-  assert(label < FIXED_LUT_SIZE);
 
-  // TO BE COMPLETED
-  // ...
+  // Descobrir qual é a cor original que vamos substituir
+  PIXMEM += 1; // Contar leitura da memória
+  uint16 match_label = img->image[v][u];
 
-  return 0;
+  // Proteção de se a cor alvo ja for igual à nova cor não fazemos nada
+  if (match_label == label) {
+    return 0;
+  }
+
+  return _recursiveFilling(img, u, v, match_label, label);
 }
 
 /// Region growing using a STACK of pixel coordinates to
 /// implement the flood-filling algorithm.
-int ImageRegionFillingWithSTACK(Image img, int u, int v, uint16 label) {
+/*int ImageRegionFillingWithSTACK(Image img, int u, int v, uint16 label) {
   assert(img != NULL);
   assert(ImageIsValidPixel(img, u, v));
   assert(label < FIXED_LUT_SIZE);
