@@ -838,17 +838,65 @@ int ImageRegionFillingWithSTACK(Image img, int u, int v, uint16 label) {
 
 /// Region growing using a QUEUE of pixel coordinates to
 /// implement the flood-filling algorithm.
-/*int ImageRegionFillingWithQUEUE(Image img, int u, int v, uint16 label) {
+int ImageRegionFillingWithQUEUE(Image img, int u, int v, uint16 label) {
   assert(img != NULL);
   assert(ImageIsValidPixel(img, u, v));
   assert(label < FIXED_LUT_SIZE);
 
-  // TO BE COMPLETED
-  // ...
+  // Obter a cor original
+  PIXMEM += 1; 
+  uint16 match_label = img->image[v][u];
 
-  return 0;
+  // Se a cor for a nova não fazemos nada
+  if (match_label == label) return 0;
+
+  // Criar a Fila com o tamanho máximo possívelque é a largura X altura
+  Queue* q = QueueCreate(img->width * img->height);
+  
+  // Processar o pixel inicial
+  PIXMEM += 1; 
+  img->image[v][u] = label;
+  
+  QueueEnqueue(q, PixelCoordsCreate(u, v));
+  
+  int count = 1; // Já pintámos 1 pixel
+
+  while (!QueueIsEmpty(q)) {
+    // Retirar o primeiro pixel que entrou (o FIFO)
+    PixelCoords p = QueueDequeue(q);
+    int pu = PixelCoordsGetU(p);
+    int pv = PixelCoordsGetV(p);
+
+    // Verificar os 4 pixeis dos lados
+    int du[] = {1, 0, -1, 0};
+    int dv[] = {0, 1, 0, -1};
+
+    for (int i = 0; i < 4; i++) {
+      int nu = pu + du[i];
+      int nv = pv + dv[i];
+
+      if (ImageIsValidPixel(img, nu, nv)) {
+        PIXMEM += 1; // Leitura do pexeis dos lados
+        
+        if (img->image[nv][nu] == match_label) {
+          // Pintamos com a nova cor se tiver a cor antiga
+          PIXMEM += 1; // Escrita
+          img->image[nv][nu] = label;
+          count++;
+
+          // Adicionamos à fila (vai para o fim da linha)
+          QueueEnqueue(q, PixelCoordsCreate(nu, nv));
+        }
+      }
+    }
+  }
+
+  // Limpar a memória da fila
+  QueueDestroy(&q);
+  
+  return count;
 }
-
+/*
 /// Image Segmentation
 
 /// Label each WHITE region with a different color.
