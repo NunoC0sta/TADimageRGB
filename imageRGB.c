@@ -777,20 +777,68 @@ int ImageRegionFillingRecursive(Image img, int u, int v, uint16 label) {
 
 /// Region growing using a STACK of pixel coordinates to
 /// implement the flood-filling algorithm.
-/*int ImageRegionFillingWithSTACK(Image img, int u, int v, uint16 label) {
+int ImageRegionFillingWithSTACK(Image img, int u, int v, uint16 label) {
   assert(img != NULL);
   assert(ImageIsValidPixel(img, u, v));
-  assert(label < FIXED_LUT_SIZE);
 
-  // TO BE COMPLETED
-  // ...
+  //Obter a cor original
+  PIXMEM += 1; 
+  uint16 match_label = img->image[v][u];
 
-  return 0;
+  // Se a cor for a nova não fazemos nada
+  if (match_label == label) return 0;
+
+  // Criar a Pilha com o pior dos casps possível que é largura X altura 
+  Stack* s = StackCreate(img->width * img->height);
+  
+  // Processar o pixel inicial. Pintamos e colocamos na pilha
+  PIXMEM += 1;
+  img->image[v][u] = label;
+  
+  StackPush(s, PixelCoordsCreate(u, v));
+  
+  int count = 1; // Já pintámos 1 pixel
+
+  while (!StackIsEmpty(s)) {
+    // Retirar o último pixel guardado
+    PixelCoords p = StackPop(s);
+    int pu = PixelCoordsGetU(p);
+    int pv = PixelCoordsGetV(p);
+
+    // Verificar os 4 pixeis dos lados manualmente
+    
+    int du[] = {1, 0, -1, 0};
+    int dv[] = {0, 1, 0, -1};
+
+    for (int i = 0; i < 4; i++) {
+      int nu = pu + du[i];
+      int nv = pv + dv[i];
+
+      if (ImageIsValidPixel(img, nu, nv)) {
+        PIXMEM += 1;
+        
+        // Cor antiga do pixel do lado
+        if (img->image[nv][nu] == match_label) {
+          // Pintar com nova cor
+          PIXMEM += 1;
+          img->image[nv][nu] = label;
+          count++;
+
+          // E adicionamos à pilha para verificar os pixeis dos lados dele depois
+          StackPush(s, PixelCoordsCreate(nu, nv));
+        }
+      }
+    }
+  }
+  // Limpar a memória da pilha auxiliar
+  StackDestroy(&s);
+  
+  return count;
 }
 
 /// Region growing using a QUEUE of pixel coordinates to
 /// implement the flood-filling algorithm.
-int ImageRegionFillingWithQUEUE(Image img, int u, int v, uint16 label) {
+/*int ImageRegionFillingWithQUEUE(Image img, int u, int v, uint16 label) {
   assert(img != NULL);
   assert(ImageIsValidPixel(img, u, v));
   assert(label < FIXED_LUT_SIZE);
