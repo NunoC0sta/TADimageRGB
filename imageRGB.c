@@ -896,7 +896,7 @@ int ImageRegionFillingWithQUEUE(Image img, int u, int v, uint16 label) {
   
   return count;
 }
-/*
+
 /// Image Segmentation
 
 /// Label each WHITE region with a different color.
@@ -907,12 +907,54 @@ int ImageRegionFillingWithQUEUE(Image img, int u, int v, uint16 label) {
 /// last argument, using a function pointer.
 ///
 /// Returns the number of image regions found.
+/// Image Segmentation
+
+/// Label each WHITE region with a different color.
+/// - WHITE (the background color) has label (LUT index) 0.
+/// - Use GenerateNextColor to create the RGB color for each new region.
+///
+/// One of the region filling functions above is passed as the
+/// last argument, using a function pointer.
+///
+/// Returns the number of image regions found.
+/// Image Segmentation
 int ImageSegmentation(Image img, FillingFunction fillFunct) {
   assert(img != NULL);
   assert(fillFunct != NULL);
 
-  // TO BE COMPLETED
-  // ...
+  int num_regions = 0;
+  
+  // Começamos com a cor preta como base para gerar as próximas
+  rgb_t current_color = 0x000000;
+  
+  // Se a LUT já tiver cores (além de Branco e Preto), usamos a última como base
+  if (img->num_colors > 0) {
+      current_color = img->LUT[img->num_colors - 1];
+  }
 
-  return 0;
-}*/
+  // Percorrer a imagem inteira, pixel a pixe
+  for (uint32 y = 0; y < img->height; y++) {
+    for (uint32 x = 0; x < img->width; x++) {
+      
+      // Ler a memória para verificar a cor do pixel
+      PIXMEM += 1; 
+
+      // Se encontrarmos um pixel branco significa que encontrámos uma região nova que ainda não foi pintada.
+      if (img->image[y][x] == WHITE) {
+        
+        num_regions++; // Encontrámos uma nova ilha!
+        
+        // Gerar uma nova cor RGB aleatória
+        current_color = GenerateNextColor(current_color);
+        
+        // Alocar essa nova cor na LUT e obter o novo label
+        int new_label = LUTAllocColor(img, current_color);
+        
+        // Disparar o flood fill
+        fillFunct(img, x, y, (uint16)new_label);
+      }
+    }
+  }
+
+  return num_regions;
+}
